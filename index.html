@@ -311,24 +311,24 @@
     <section id="contact">
         <h2 class="section-title">Get in <span>Touch</span></h2>
         <div class="contact-wrapper">
-            <form id="contactForm">
+            <!-- Fomu imeunganishwa na Formspree yako -->
+            <form action="https://formspree.io/f/xwloodjd" method="POST" id="contactForm">
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" placeholder="Enter your name..." required>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name..." required>
                 </div>
                 <div class="form-group">
-                    <label for="email">email</label>
-                    <input type="email" id="email" placeholder="name@example.com" required>
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="name@example.com" required>
                 </div>
                 <div class="form-group">
                     <label for="message">Project Details / Message</label>
-                    <textarea id="message" rows="4" placeholder="Tell us about your project..." required></textarea>
+                    <textarea id="message" name="message" rows="4" placeholder="Tell us about your project..." required></textarea>
                 </div>
                 <button type="submit" class="btn" style="width: 100%;">Send Message</button>
             </form>
             <div style="margin-top: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-                <p>Phone: <strong>0757 351 134</strong> | Email: <strong>nbl3ktech@gmail.com
-                </strong></p>
+                <p>Phone: <strong>0757 351 134</strong> | Email: <strong>nbl3ktech@gmail.com</strong></p>
             </div>
         </div>
     </section>
@@ -337,16 +337,6 @@
     <footer>
         <p>&copy; 2026 NBL3KTECH. All rights reserved. | Tanzania</p>
     </footer>
-
-    <!-- JavaScript Interaction -->
-    <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            alert(`Thank you, ${name}! Your message has been received by the NBL3KTECH team. We will get back to you soon.`);
-            this.reset();
-        });
-    </script>
 
 </body>
 </html>
