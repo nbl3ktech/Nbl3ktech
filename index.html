@@ -1,1 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBL3KTECH | Electronics, Robotics & Engineering</title>
+    <style>
+        :root {
+            --bg-dark: #0a0f1c;
+            --bg-card: #111827;
+            --primary: #00e5ff;
+            --secondary: #3b82f6;
+            --whatsapp: #25D366;
+            --instagram: #E1306C;
+            --tiktok: #ff0050;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 15, 28, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+            flex-wrap: wrap;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .brand-logo-img {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+
+        .logo-text {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+
+        .logo-text span { color: var(--text-light); }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.2rem;
+            align-items: center;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.45rem 0.9rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav button:hover, nav button.active-tab {
+            color: #000;
+            background: var(--primary);
+        }
+
+        .page-section {
+            display: none;
+            padding-top: 5.5rem;
+            min-height: 90vh;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .page-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            min-height: 82vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 3rem 5% 2rem;
+            background: radial-gradient(circle at top, #162238 0%, var(--bg-dark) 70%);
+        }
+
+        .hero-content { max-width: 820px; }
+
+        .hero-logo-large {
+            width: 110px;
+            height: 110px;
+            border-radius: 18px;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.35);
+        }
+
+        .hero h1 {
+            font-size: 2.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span { color: var(--primary); }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.85rem 1.8rem;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        .social-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .social-btn:hover { transform: translateY(-2px); }
+        .btn-wa { background-color: var(--whatsapp); color: #000; }
+        .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .btn-tt { background-color: #000; border: 1px solid var(--tiktok); }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title span { color: var(--primary); }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card h3 { color: var(--primary); margin-bottom: 1rem; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Auth Box (Register / Login) */
+        .auth-container {
+            max-width: 450px;
+            margin: 1rem auto 3rem;
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 229, 255, 0.25);
+        }
+
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-dark);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 5px;
+            color: var(--text-light);
+            outline: none;
+        }
+
+        input:focus, textarea:focus { border-color: var(--primary); }
+
+        /* Page 2: Detailed Blocks & Technology History Timeline */
+        .detail-block {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 1.8rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .detail-block h3 { color: var(--primary); margin-bottom: 0.8rem; font-size: 1.35rem; }
+        .detail-block p { color: var(--text-muted); margin-bottom: 0.8rem; }
+
+        .timeline {
+            border-left: 2px solid var(--primary);
+            padding-left: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.25rem;
+            top: 0.35rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .timeline-item h4 {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-item span {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Page 3: Feed & Chat */
+        .feed-layout {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Completely Hidden CEO Box unless unlocked via secret double-click */
+        .admin-post-box {
+            display: none;
+            background: #162238;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--primary);
+        }
+
+        .status-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .chat-box {
+            background: var(--bg-card);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .chat-header {
+            padding: 1rem;
+            background: #162238;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-weight: bold;
+            color: var(--primary);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .msg {
+            background: var(--bg-dark);
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            max-width: 85%;
+            font-size: 0.9rem;
+        }
+
+        .msg.ceo-msg {
+            background: rgba(0, 229, 255, 0.15);
+            border-left: 3px solid var(--primary);
+            align-self: flex-end;
+        }
+
+        .msg small { display: block; color: var(--primary); font-weight: bold; margin-bottom: 0.2rem; }
+
+        .chat-input-area {
+            padding: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .floating-wa {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--whatsapp);
+            color: #000;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #060911;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .feed-layout { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+            header { justify-content: center; gap: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Double-clicking this brand logo triggers the hidden CEO Login -->
+        <div class="brand-box" onclick="checkAccessAndSwitch('page1')" ondblclick="secretCEOLogin()" title="NBL3KTECH">
+            <img src="logo.png" alt="NBL3KTECH Logo" class="brand-logo-img" onerror="this.style.display='none'">
+            <span class="logo-text">NBL3K<span>TECH</span></span>
+        </div>
+        <nav>
+            <ul>
+                <li><button id="btn-page1" class="active-tab" onclick="checkAccessAndSwitch('page1')">1. Home</button></li>
+                <li><button id="btn-page2" onclick="checkAccessAndSwitch('page2')">2. About & Tech History</button></li>
+                <li><button id="btn-page3" onclick="checkAccessAndSwitch('page3')">3. Updates & Chat</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ================= PAGE 1: HOME & REGISTRATION/LOGIN ================= -->
+    <div id="page1" class="page-section active">
+        <section class="hero">
+            <div class="hero-content">
+                <img src="logo.png" alt="NBL3KTECH Emblem" class="hero-logo-large" onerror="this.style.display='none'">
+                <h1>Innovative <span>Electronics, Robotics</span> & Engineering Solutions</h1>
+                <p>Register or log in below to unlock full access to our engineering archives, technology history, live status feed, and direct consultation chat.</p>
+                
+                <div class="social-bar">
+                    <a href="https://wa.me/255757351134?text=Hello%20NBL3KTECH" target="_blank" class="social-btn btn-wa">WhatsApp</a>
+                    <a href="https://instagram.com/nbl3k_tech" target="_blank" class="social-btn btn-ig">Instagram (@nbl3k_tech)</a>
+                    <a href="https://tiktok.com/@nbl3ktec" target="_blank" class="social-btn btn-tt">TikTok (@nbl3ktec)</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Authentication Box -->
+        <div class="container">
+            <div class="auth-container">
+                <div id="authForms">
+                    <h3 id="formTitle" style="color: var(--primary); text-align: center; margin-bottom: 1.5rem;">User Login / Register</h3>
+                    
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="authName" placeholder="Enter your full name...">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="authEmail" placeholder="Enter your email...">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="authPass" placeholder="Create or enter password...">
+                    </div>
+                    
+                    <button class="btn" style="width: 100%; margin-bottom: 1rem;" onclick="handleAuth()">Proceed to Website</button>
+                    <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer;" onclick="toggleAuthMode()">
+                        <span id="toggleText">New visitor? Switch to Registration</span>
+                    </p>
+                </div>
+
+                <div id="userInfoBox" style="display: none; text-align: center;">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Access Granted!</h3>
+                    <p id="loggedUserEmail" style="color: var(--text-muted); margin-bottom: 1.2rem;"></p>
+                    <button class="btn" onclick="checkAccessAndSwitch('page2')" style="width: 100%; margin-bottom: 0.6rem;">Explore Page 2: Details & History &rarr;</button>
+                    <button class="btn" onclick="logoutUser()" style="background: #ef4444; color: #fff; width: 100%;">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2: DETAILED INFO & HISTORY OF TECHNOLOGY ================= -->
+    <div id="page2" class="page-section">
+        <div class="container">
+            <h2 class="section-title">About <span>NBL3KTECH</span> & Engineering</h2>
+            
+            <div class="detail-block">
+                <h3>1. Who We Are & Leadership</h3>
+                <p><strong>NBL3KTECH</strong> is an innovation-driven electronics, robotics, and mechatronics engineering enterprise founded in Tanzania by CEO <strong>Aziz Hamidu Luambano</strong>. We bridge theoretical engineering principles with practical hardware implementation—designing durable electronic circuits, autonomous robots, and industrial control systems built to solve modern technical challenges.</p>
+                <p>Our core mission is to accelerate technological self-reliance across East Africa through precision hardware prototyping, embedded firmware engineering, and intelligent automation.</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>2. Comprehensive Engineering & Technical Services</h3>
+                <p><strong>Custom PCB Design & Embedded Systems:</strong> Complete schematic architecture, multi-layer Printed Circuit Board (PCB) layout, soldering, and firmware programming for Arduino, ESP32, STM32, and PIC microcontrollers.</p>
+                <p><strong>Robotics & Autonomous Systems:</strong> Design and fabrication of obstacle-avoiding mobile robots, robotic manipulators, automated sorting conveyors, and sensor-guided field inspection units.</p>
+                <p><strong>Industrial & Home Automation (IoT):</strong> Programmable Logic Controller (PLC) integration, pneumatic gate and actuator control loops, smart energy management, and wireless IoT telemetry.</p>
+                <p><strong>CAD Modeling & Engineering Consultation:</strong> 2D/3D mechanical component drafting using AutoCAD and technical advisory for academic, commercial, and industrial hardware projects.</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>3. How Our Project Development Workflow Operates</h3>
+                <p><strong>Phase 1 — Requirement Analysis:</strong> Clients submit project specifications via our direct email inquiry form, WhatsApp, or live chat portal.</p>
+                <p><strong>Phase 2 — Circuit Simulation & CAD Drafting:</strong> Our engineering team models the mechanical enclosure and simulates electronic circuits to verify voltage, current, and logic integrity.</p>
+                <p><strong>Phase 3 — Prototyping, Firmware & Testing:</strong> Hardware components are assembled onto custom PCBs, programmed, and subjected to rigorous stress testing before final deployment.</p>
+            </div>
+
+            <!-- History of Technology Section -->
+            <h2 class="section-title" style="margin-top: 4rem;">The Evolution & <span>History of Technology</span></h2>
+            <div class="detail-block">
+                <p>Understanding modern robotics and mechatronics requires appreciating the milestones that transformed human civilization from manual labor to intelligent machines:</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span>1760 – 1840 | The First Industrial Revolution</span>
+                        <h4>Mechanization & Steam Power</h4>
+                        <p>The transition from hand production methods to machines powered by water and steam laid the mechanical foundation of modern engineering, introducing gears, linkages, and precision machining.</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span>1870 – 1914 | The Second Industrial Revolution</span>
+                        <h4>Electricity, Electromagnetism & Mass Production</h4>
+                        <p>Breakthroughs by pioneers like Nikola Tesla, Michael Faraday, and Thomas Edison harnessed electrical power, enabling electric motors, telecommunications, and assembly-line manufacturing.</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span>1947 – 1971 | The Semiconductor & Digital Revolution</span>
+                        <h4>Invention of the Transistor & Microprocessor</h4>
+                        <p>The invention of the transistor at Bell Labs (1947) replaced bulky vacuum tubes, leading to Integrated Circuits (ICs) and the first commercial microprocessor (Intel 4004 in 1971)—the brain behind every modern electronic device.</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span>1969 – 2000s | Rise of Mechatronics & Programmable Automation</span>
+                        <h4>PLCs, Industrial Robots & Embedded Microcontrollers</h4>
+                        <p>The integration of mechanical engineering, electronics, and computer control gave birth to Mechatronics. Programmable Logic Controllers (PLCs) and early robotic arms revolutionized factory automation.</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span>2010s – Present (2026) | Industry 4.0, IoT & Intelligent Robotics</span>
+                        <h4>Connected Smart Systems & AI-Driven Hardware</h4>
+                        <p>Today, low-cost, high-speed microcontrollers (like ESP32 and ARM Cortex), wireless Internet of Things (IoT) networks, and Artificial Intelligence allow startups like <strong>NBL3KTECH</strong> to engineer smart, autonomous solutions accessible to everyone.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <button onclick="checkAccessAndSwitch('page3')" class="btn">Proceed to Updates & Live Chat &rarr;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3: STEALTH CEO POSTS, CHAT & FORMSPREE ================= -->
+    <div id="page3" class="page-section">
+        <div class="container">
+            <h2 class="section-title">NBL3KTECH <span>Updates & Live Chat</span></h2>
+
+            <!-- Completely hidden from regular users. Only opens when CEO double-clicks top logo & enters password -->
+            <div id="adminPostBox" class="admin-post-box">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">CEO Status Publisher</h3>
+                <div class="form-group"><input type="text" id="postTitle" placeholder="Update Headline..."></div>
+                <div class="form-group"><textarea id="postContent" rows="3" placeholder="Write your status update, project progress, or announcement..."></textarea></div>
+                <button class="btn" onclick="publishStatus()">Publish Update</button>
+                <button class="btn" style="background: #ef4444; color: #fff; margin-left: 0.5rem;" onclick="logoutAdmin()">Close Panel</button>
+            </div>
+
+            <div class="feed-layout">
+                <!-- Left Column: Status Feed (Visitors only see the published posts, no posting hints) -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Official Status & Announcements</h3>
+                    <div id="statusFeedContainer">
+                        <div class="status-card">
+                            <div class="status-header"><span><strong>Aziz Hamidu Luambano (CEO)</strong></span><span>Pinned</span></div>
+                            <h4 style="margin-bottom: 0.5rem;">Welcome to the Official NBL3KTECH Portal!</h4>
+                            <p style="color: var(--text-muted); font-size: 0.95rem;">Stay tuned here for live updates on our latest electronics prototypes, robotics builds, and mechatronics engineering breakthroughs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Live Chat -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Live Discussion Chat</h3>
+                    <div class="chat-box">
+                        <div class="chat-header">Interactive Client & Community Chat</div>
+                        <div id="chatMessages" class="chat-messages">
+                            <div class="msg ceo-msg"><small>Aziz (CEO - NBL3KTECH)</small>Hello! Welcome to our live chat. Feel free to ask questions or discuss your engineering ideas below.</div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chatInput" placeholder="Write a message..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                            <button class="btn" style="padding: 0.5rem 1rem;" onclick="sendChatMessage()">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formspree Direct Email Contact Form -->
+            <div style="margin-top: 4rem; max-width: 600px; margin-left: auto; margin-right: auto;" class="card">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">Send Direct Email Inquiry</h3>
+                <form action="https://formspree.io/f/xwloodjd" method="POST">
+                    <div class="form-group"><label>Full Name</label><input type="text" name="name" placeholder="Your name..." required></div>
+                    <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="Your email..." required></div>
+                    <div class="form-group"><label>Project Details / Message</label><textarea name="message" rows="4" placeholder="Describe your inquiry or project..." required></textarea></div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Message via Email</button>
+                </form>
+                <div style="margin-top: 1.2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                    <p>WhatsApp / Call: <strong>+255 757 351 134</strong> | Email: <strong>nbl3ktech@gmail.com</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/255757351134?text=Hello%20NBL3KTECH" target="_blank" class="floating-wa">WhatsApp</a>
+
+    <footer>
+        <p>&copy; 2026 NBL3KTECH. All rights reserved. | Tanzania</p>
+    </footer>
+
+    <script>
+        let isRegisterMode = false;
+        let isCEO = false;
+        const CEO_PASSWORD = "NBL3K2026"; // Secret CEO password
+
+        function toggleAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('formTitle').innerText = isRegisterMode ? "User Registration" : "User Login";
+            document.getElementById('toggleText').innerText = isRegisterMode ? "Already registered? Switch to Login" : "New visitor? Switch to Registration";
+        }
+
+        function handleAuth() {
+            const name = document.getElementById('authName').value.trim();
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPass').value.trim();
+            if(!email || !pass) { 
+                alert("Please enter your email address and password."); 
+                return; 
+            }
+
+            const displayUser = name ? `${name} (${email})` : email;
+            localStorage.setItem('nbl3k_logged_user', displayUser);
+            alert(isRegisterMode ? "Registration successful! Welcome to NBL3KTECH." : "Login successful!");
+            updateAuthUI();
+        }
+
+        function updateAuthUI() {
+            const user = localStorage.getItem('nbl3k_logged_user');
+            if(user) {
+                document.getElementById('authForms').style.display = 'none';
+                document.getElementById('userInfoBox').style.display = 'block';
+                document.getElementById('loggedUserEmail').innerText = "Signed in as: " + user;
+            } else {
+                document.getElementById('authForms').style.display = 'block';
+                document.getElementById('userInfoBox').style.display = 'none';
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('nbl3k_logged_user');
+            updateAuthUI();
+            switchPage('page1');
+        }
+
+        function checkAccessAndSwitch(pageId) {
+            const user = localStorage.getItem('nbl3k_logged_user');
+            if(pageId !== 'page1' && !user) {
+                alert("Please register or log in on the Home page first to access the remaining sections.");
+                switchPage('page1');
+                return;
+            }
+            switchPage(pageId);
+        }
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-tab'));
+            document.getElementById(pageId).classList.add('active');
+            document.getElementById('btn-' + pageId).classList.add('active-tab');
+            window.scrollTo(0, 0);
+        }
+
+        // Hidden trigger: Double-click the top-left NBL3KTECH brand logo
+        function secretCEOLogin() {
+            if (isCEO) return;
+            const pass = prompt("CEO Verification:");
+            if (pass === CEO_PASSWORD) {
+                isCEO = true;
+                localStorage.setItem('nbl3k_logged_user', 'Aziz Hamidu Luambano (CEO)');
+                updateAuthUI();
+                switchPage('page3');
+                document.getElementById('adminPostBox').style.display = 'block';
+            }
+        }
+
+        function logoutAdmin() {
+            isCEO = false;
+            document.getElementById('adminPostBox').style.display = 'none';
+        }
+
+        function publishStatus() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            if (!title || !content) { alert("Please enter both a headline and message."); return; }
+
+            const now = new Date().toLocaleString();
+            const postHTML = `
+                <div class="status-card">
+                    <div class="status-header"><span><strong>Aziz Hamidu Luambano (CEO)</strong></span><span>${now}</span></div>
+                    <h4 style="margin-bottom: 0.5rem; color: #fff;">${title}</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">${content}</p>
+                </div>
+            `;
+            document.getElementById('statusFeedContainer').insertAdjacentHTML('afterbegin', postHTML);
+            localStorage.setItem('nbl3k_posts', document.getElementById('statusFeedContainer').innerHTML);
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+        }
+
+        function sendChatMessage() {
+            const user = localStorage.getItem('nbl3k_logged_user') || "Guest";
+            const msgText = document.getElementById('chatInput').value.trim();
+            if (!msgText) return;
+
+            const chatBox = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = isCEO ? 'msg ceo-msg' : 'msg';
+            const sender = isCEO ? "Aziz (CEO - NBL3KTECH)" : user;
+            msgDiv.innerHTML = `<small>${sender}</small>${msgText}`;
+            
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            document.getElementById('chatInput').value = '';
+            localStorage.setItem('nbl3k_chats', chatBox.innerHTML);
+        }
+
+        window.onload = function() {
+            updateAuthUI();
+            const savedPosts = localStorage.getItem('nbl3k_posts');
+            const savedChats = localStorage.getItem('nbl3k_chats');
+            if (savedPosts) document.getElementById('statusFeedContainer').innerHTML = savedPosts;
+            if (savedChats) document.getElementById('chatMessages').innerHTML = savedChats;
+        };
+    </script>
+</body>
+</html>
