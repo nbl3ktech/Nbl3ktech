@@ -1,1 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBL3KTECH | Electronics, Robotics & Engineering</title>
+    <style>
+        :root {
+            --bg-dark: #0a0f1c;
+            --bg-card: #111827;
+            --primary: #00e5ff;
+            --secondary: #3b82f6;
+            --whatsapp: #25D366;
+            --instagram: #E1306C;
+            --tiktok: #ff0050;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; }
+        header { position: fixed; top: 0; width: 100%; background: rgba(10, 15, 28, 0.95); backdrop-filter: blur(10px); padding: 0.8rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0, 229, 255, 0.15); flex-wrap: wrap; }
+        .brand-box { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; text-decoration: none; user-select: none; }
+        .brand-logo-img { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; border: 1px solid var(--primary); box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
+        .logo-text { font-size: 1.45rem; font-weight: 800; color: var(--primary); letter-spacing: 2px; }
+        .logo-text span { color: var(--text-light); }
+        nav ul { display: flex; list-style: none; gap: 1.2rem; align-items: center; }
+        nav button { background: none; border: none; color: var(--text-light); font-size: 0.95rem; font-weight: 600; cursor: pointer; padding: 0.45rem 0.9rem; border-radius: 5px; transition: all 0.3s; }
+        nav button:hover, nav button.active-tab { color: #000; background: var(--primary); }
+        .page-section { display: none; padding-top: 5.5rem; min-height: 90vh; animation: fadeIn 0.4s ease-in-out; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .hero { min-height: 82vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 3rem 5% 2rem; background: radial-gradient(circle at top, #162238 0%, var(--bg-dark) 70%); }
+        .hero-content { max-width: 820px; }
+        .hero-logo-large { width: 110px; height: 110px; border-radius: 18px; object-fit: cover; margin-bottom: 1.5rem; border: 2px solid var(--primary); box-shadow: 0 0 25px rgba(0, 229, 255, 0.35); }
+        .hero h1 { font-size: 2.9rem; margin-bottom: 1rem; line-height: 1.2; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .btn { display: inline-block; padding: 0.85rem 1.8rem; background: linear-gradient(45deg, var(--secondary), var(--primary)); color: #000; font-weight: 700; text-decoration: none; border-radius: 5px; transition: transform 0.3s, box-shadow 0.3s; border: none; cursor: pointer; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 229, 255, 0.3); }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .social-bar { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .social-btn { padding: 0.6rem 1.2rem; border-radius: 5px; color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: transform 0.2s; }
+        .social-btn:hover { transform: translateY(-2px); }
+        .btn-wa { background-color: var(--whatsapp); color: #000; }
+        .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .btn-tt { background-color: #000; border: 1px solid var(--tiktok); }
+        .container { max-width: 1150px; margin: 0 auto; padding: 3rem 5%; }
+        .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 2.5rem; }
+        .section-title span { color: var(--primary); }
+        .card { background: var(--bg-card); padding: 2rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06); }
+        .card h3 { color: var(--primary); margin-bottom: 1rem; }
+        .auth-container { max-width: 450px; margin: 1rem auto 3rem; background: var(--bg-card); padding: 2.5rem; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.25); }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); }
+        input, textarea, select { width: 100%; padding: 0.75rem; background: var(--bg-dark); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 5px; color: var(--text-light); outline: none; }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+        .auth-err { color: #f87171; font-size: 0.9rem; margin-bottom: 0.8rem; min-height: 1.2rem; text-align: center; }
+        .detail-block { background: var(--bg-card); padding: 2rem; border-radius: 10px; margin-bottom: 1.8rem; border-left: 4px solid var(--primary); }
+        .detail-block h3 { color: var(--primary); margin-bottom: 0.8rem; font-size: 1.35rem; }
+        .detail-block p { color: var(--text-muted); margin-bottom: 0.8rem; }
+        .timeline { border-left: 2px solid var(--primary); padding-left: 1.8rem; margin-top: 1.5rem; }
+        .timeline-item { position: relative; margin-bottom: 1.8rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2.25rem; top: 0.35rem; width: 14px; height: 14px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .timeline-item h4 { color: var(--text-light); font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .timeline-item span { color: var(--primary); font-weight: bold; font-size: 0.85rem; display: block; margin-bottom: 0.3rem; }
+        .feed-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; }
+        .admin-post-box { display: none; background: #162238; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid var(--primary); }
+        .status-card { background: var(--bg-card); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.08); }
+        .status-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--primary); margin-bottom: 0.5rem; gap: 0.5rem; }
+        .status-card p { color: var(--text-muted); font-size: 0.95rem; white-space: pre-wrap; }
+        .chat-box { background: var(--bg-card); border-radius: 10px; display: flex; flex-direction: column; height: 500px; border: 1px solid rgba(0, 229, 255, 0.2); }
+        .chat-header { padding: 1rem; background: #162238; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; color: var(--primary); border-radius: 10px 10px 0 0; }
+        .chat-threads { display: none; padding: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .chat-messages { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; }
+        .msg { background: var(--bg-dark); padding: 0.7rem 1rem; border-radius: 8px; max-width: 85%; font-size: 0.9rem; white-space: pre-wrap; word-break: break-word; }
+        .msg.ceo-msg { background: rgba(0, 229, 255, 0.15); border-left: 3px solid var(--primary); align-self: flex-end; }
+        .msg small { display: block; color: var(--primary); font-weight: bold; margin-bottom: 0.2rem; }
+        .chat-input-area { padding: 0.8rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 0.5rem; }
+        .floating-wa { position: fixed; bottom: 20px; right: 20px; background-color: var(--whatsapp); color: #000; padding: 0.8rem 1.2rem; border-radius: 50px; font-weight: bold; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); z-index: 999; }
+        footer { text-align: center; padding: 2rem; background: #060911; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2000; align-items: center; justify-content: center; padding: 1rem; }
+        .modal.open { display: flex; }
+        .modal-box { background: var(--bg-card); padding: 2rem; border-radius: 12px; border: 1px solid var(--primary); width: 100%; max-width: 400px; }
+        @media (max-width: 768px) {
+            .feed-layout { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+            header { justify-content: center; gap: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
 
+    <header>
+        <!-- Double-click kwenye logo hii kufungua CEO login -->
+        <div class="brand-box" onclick="checkAccessAndSwitch('page1')" ondblclick="secretCEOLogin()" title="NBL3KTECH">
+            <img src="logo.png" alt="NBL3KTECH Logo" class="brand-logo-img" onerror="this.style.display='none'">
+            <span class="logo-text">NBL3K<span>TECH</span></span>
+        </div>
+        <nav>
+            <ul>
+                <li><button id="btn-page1" class="active-tab" onclick="checkAccessAndSwitch('page1')">1. Home</button></li>
+                <li><button id="btn-page2" onclick="checkAccessAndSwitch('page2')">2. About & Tech History</button></li>
+                <li><button id="btn-page3" onclick="checkAccessAndSwitch('page3')">3. Updates & Chat</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ================= PAGE 1 ================= -->
+    <div id="page1" class="page-section active">
+        <section class="hero">
+            <div class="hero-content">
+                <img src="logo.png" alt="NBL3KTECH Emblem" class="hero-logo-large" onerror="this.style.display='none'">
+                <h1>Innovative <span>Electronics, Robotics</span> & Engineering Solutions</h1>
+                <p>Register or log in below to unlock full access to our engineering archives, technology history, live status feed, and direct consultation chat.</p>
+                <div class="social-bar">
+                    <a href="https://wa.me/255757351134?text=Hello%20NBL3KTECH" target="_blank" class="social-btn btn-wa">WhatsApp</a>
+                    <a href="https://instagram.com/nbl3k_tech" target="_blank" class="social-btn btn-ig">Instagram (@nbl3k_tech)</a>
+                    <a href="https://tiktok.com/@nbl3ktec" target="_blank" class="social-btn btn-tt">TikTok (@nbl3ktec)</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="auth-container">
+                <div id="authForms">
+                    <h3 id="formTitle" style="color: var(--primary); text-align: center; margin-bottom: 1.5rem;">User Login</h3>
+                    <div class="form-group" id="nameGroup" style="display:none;">
+                        <label>Full Name</label>
+                        <input type="text" id="authName" placeholder="Enter your full name...">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="authEmail" placeholder="Enter your email...">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="authPass" placeholder="Enter password (min 6 characters)...">
+                    </div>
+                    <div id="authErr" class="auth-err"></div>
+                    <button class="btn" style="width: 100%; margin-bottom: 1rem;" onclick="handleAuth()">Proceed to Website</button>
+                    <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); cursor: pointer;" onclick="toggleAuthMode()">
+                        <span id="toggleText">New visitor? Switch to Registration</span>
+                    </p>
+                </div>
+
+                <div id="userInfoBox" style="display: none; text-align: center;">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Access Granted!</h3>
+                    <p id="loggedUserEmail" style="color: var(--text-muted); margin-bottom: 1.2rem;"></p>
+                    <button class="btn" onclick="checkAccessAndSwitch('page2')" style="width: 100%; margin-bottom: 0.6rem;">Explore Page 2: Details & History &rarr;</button>
+                    <button class="btn btn-danger" onclick="logoutUser()" style="width: 100%;">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2 ================= -->
+    <div id="page2" class="page-section">
+        <div class="container">
+            <h2 class="section-title">About <span>NBL3KTECH</span> & Engineering</h2>
+
+            <div class="detail-block">
+                <h3>1. Who We Are & Leadership</h3>
+                <p><strong>NBL3KTECH</strong> is an innovation-driven electronics, robotics, and mechatronics engineering enterprise founded in Tanzania by CEO <strong>Aziz Hamidu Luambano</strong>. We bridge theoretical engineering principles with practical hardware implementation—designing durable electronic circuits, autonomous robots, and industrial control systems built to solve modern technical challenges.</p>
+                <p>Our core mission is to accelerate technological self-reliance across East Africa through precision hardware prototyping, embedded firmware engineering, and intelligent automation.</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>2. Comprehensive Engineering & Technical Services</h3>
+                <p><strong>Custom PCB Design & Embedded Systems:</strong> Complete schematic architecture, multi-layer Printed Circuit Board (PCB) layout, soldering, and firmware programming for Arduino, ESP32, STM32, and PIC microcontrollers.</p>
+                <p><strong>Robotics & Autonomous Systems:</strong> Design and fabrication of obstacle-avoiding mobile robots, robotic manipulators, automated sorting conveyors, and sensor-guided field inspection units.</p>
+                <p><strong>Industrial & Home Automation (IoT):</strong> Programmable Logic Controller (PLC) integration, pneumatic gate and actuator control loops, smart energy management, and wireless IoT telemetry.</p>
+                <p><strong>CAD Modeling & Engineering Consultation:</strong> 2D/3D mechanical component drafting using AutoCAD and technical advisory for academic, commercial, and industrial hardware projects.</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>3. How Our Project Development Workflow Operates</h3>
+                <p><strong>Phase 1 — Requirement Analysis:</strong> Clients submit project specifications via our direct email inquiry form, WhatsApp, or live chat portal.</p>
+                <p><strong>Phase 2 — Circuit Simulation & CAD Drafting:</strong> Our engineering team models the mechanical enclosure and simulates electronic circuits to verify voltage, current, and logic integrity.</p>
+                <p><strong>Phase 3 — Prototyping, Firmware & Testing:</strong> Hardware components are assembled onto custom PCBs, programmed, and subjected to rigorous stress testing before final deployment.</p>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 4rem;">The Evolution & <span>History of Technology</span></h2>
+            <div class="detail-block">
+                <p>Understanding modern robotics and mechatronics requires appreciating the milestones that transformed human civilization from manual labor to intelligent machines:</p>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span>1760 – 1840 | The First Industrial Revolution</span>
+                        <h4>Mechanization & Steam Power</h4>
+                        <p>The transition from hand production methods to machines powered by water and steam laid the mechanical foundation of modern engineering, introducing gears, linkages, and precision machining.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>1870 – 1914 | The Second Industrial Revolution</span>
+                        <h4>Electricity, Electromagnetism & Mass Production</h4>
+                        <p>Breakthroughs by pioneers like Nikola Tesla, Michael Faraday, and Thomas Edison harnessed electrical power, enabling electric motors, telecommunications, and assembly-line manufacturing.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>1947 – 1971 | The Semiconductor & Digital Revolution</span>
+                        <h4>Invention of the Transistor & Microprocessor</h4>
+                        <p>The invention of the transistor at Bell Labs (1947) replaced bulky vacuum tubes, leading to Integrated Circuits (ICs) and the first commercial microprocessor (Intel 4004 in 1971)—the brain behind every modern electronic device.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>1969 – 2000s | Rise of Mechatronics & Programmable Automation</span>
+                        <h4>PLCs, Industrial Robots & Embedded Microcontrollers</h4>
+                        <p>The integration of mechanical engineering, electronics, and computer control gave birth to Mechatronics. Programmable Logic Controllers (PLCs) and early robotic arms revolutionized factory automation.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>2010s – Present (2026) | Industry 4.0, IoT & Intelligent Robotics</span>
+                        <h4>Connected Smart Systems & AI-Driven Hardware</h4>
+                        <p>Today, low-cost, high-speed microcontrollers (like ESP32 and ARM Cortex), wireless Internet of Things (IoT) networks, and Artificial Intelligence allow startups like <strong>NBL3KTECH</strong> to engineer smart, autonomous solutions accessible to everyone.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <button onclick="checkAccessAndSwitch('page3')" class="btn">Proceed to Updates & Live Chat &rarr;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3 ================= -->
+    <div id="page3" class="page-section">
+        <div class="container">
+            <h2 class="section-title">NBL3KTECH <span>Updates & Live Chat</span></h2>
+
+            <!-- Inaonekana kwa CEO tu (kwa kuangalia akaunti iliyoingia) -->
+            <div id="adminPostBox" class="admin-post-box">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">CEO Status Publisher</h3>
+                <div class="form-group"><input type="text" id="postTitle" placeholder="Update Headline..."></div>
+                <div class="form-group"><textarea id="postContent" rows="3" placeholder="Write your status update, project progress, or announcement..."></textarea></div>
+                <button class="btn" onclick="publishStatus()">Publish Update</button>
+                <button class="btn btn-danger" style="margin-left: 0.5rem;" onclick="logoutUser()">Log Out</button>
+            </div>
+
+            <div class="feed-layout">
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Official Status & Announcements</h3>
+                    <div id="statusFeedContainer"></div>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Live Discussion Chat</h3>
+                    <div class="chat-box">
+                        <div class="chat-header" id="chatHeader">Chat with NBL3KTECH</div>
+                        <div class="chat-threads" id="chatThreads">
+                            <select id="threadSelect" onchange="selectThread(this.value)"></select>
+                        </div>
+                        <div id="chatMessages" class="chat-messages"></div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chatInput" placeholder="Write a message..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                            <button class="btn" style="padding: 0.5rem 1rem;" onclick="sendChatMessage()">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; max-width: 600px; margin-left: auto; margin-right: auto;" class="card">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">Send Direct Email Inquiry</h3>
+                <form action="https://formspree.io/f/xwloodjd" method="POST">
+                    <div class="form-group"><label>Full Name</label><input type="text" name="name" placeholder="Your name..." required></div>
+                    <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="Your email..." required></div>
+                    <div class="form-group"><label>Project Details / Message</label><textarea name="message" rows="4" placeholder="Describe your inquiry or project..." required></textarea></div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Message via Email</button>
+                </form>
+                <div style="margin-top: 1.2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                    <p>WhatsApp / Call: <strong>+255 757 351 134</strong> | Email: <strong>nbl3ktech@gmail.com</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CEO login modal -->
+    <div id="ceoModal" class="modal">
+        <div class="modal-box">
+            <h3 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">CEO Login</h3>
+            <div class="form-group"><input type="email" id="ceoEmail" placeholder="CEO email"></div>
+            <div class="form-group"><input type="password" id="ceoPass" placeholder="Password" onkeypress="if(event.key==='Enter') ceoSignIn()"></div>
+            <div id="ceoErr" class="auth-err"></div>
+            <button class="btn" style="width: 100%; margin-bottom: 0.6rem;" onclick="ceoSignIn()">Login</button>
+            <button class="btn btn-danger" style="width: 100%;" onclick="closeCeoModal()">Cancel</button>
+        </div>
+    </div>
+
+    <a href="https://wa.me/255757351134?text=Hello%20NBL3KTECH" target="_blank" class="floating-wa">WhatsApp</a>
+
+    <footer>
+        <p>&copy; 2026 NBL3KTECH. All rights reserved. | Tanzania</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged }
+            from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp }
+            from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+        // ====== 1) WEKA CONFIG YAKO YA FIREBASE HAPA ======
+        const firebaseConfig = {
+            apiKey: "WEKA_HAPA",
+            authDomain: "WEKA_HAPA",
+            projectId: "WEKA_HAPA",
+            appId: "WEKA_HAPA"
+        };
+
+        // ====== 2) EMAIL YA CEO (lazima ilingane na ile iliyo kwenye firestore.rules) ======
+        const CEO_EMAIL = "nbl3ktech@gmail.com";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const $ = (id) => document.getElementById(id);
+
+        let isRegisterMode = false;
+        let currentUser = null;
+        let isCEO = false;
+        let unsubPosts = null, unsubThreads = null, unsubMessages = null;
+        let activeThreadUid = null;
+
+        // ---------- helpers ----------
+        function friendlyError(e) {
+            const c = e && e.code ? e.code : "";
+            if (c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found")) return "Email au password si sahihi.";
+            if (c.includes("email-already-in-use")) return "Email hii tayari imesajiliwa. Tumia Login.";
+            if (c.includes("weak-password")) return "Password iwe na angalau herufi 6.";
+            if (c.includes("invalid-email")) return "Email si sahihi.";
+            if (c.includes("too-many-requests")) return "Majaribio mengi. Jaribu tena baadaye.";
+            return "Imeshindikana. Jaribu tena.";
+        }
+        function fmtTime(ts) {
+            return ts && ts.toDate ? ts.toDate().toLocaleString() : "";
+        }
+
+        // ---------- navigation ----------
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-tab'));
+            $(pageId).classList.add('active');
+            $('btn-' + pageId).classList.add('active-tab');
+            window.scrollTo(0, 0);
+        }
+        window.switchPage = switchPage;
+
+        window.checkAccessAndSwitch = function (pageId) {
+            if (pageId !== 'page1' && !currentUser) {
+                alert("Please register or log in on the Home page first to access the remaining sections.");
+                switchPage('page1');
+                return;
+            }
+            switchPage(pageId);
+        };
+
+        // ---------- visitor auth ----------
+        window.toggleAuthMode = function () {
+            isRegisterMode = !isRegisterMode;
+            $('formTitle').innerText = isRegisterMode ? "User Registration" : "User Login";
+            $('nameGroup').style.display = isRegisterMode ? "block" : "none";
+            $('toggleText').innerText = isRegisterMode ? "Already registered? Switch to Login" : "New visitor? Switch to Registration";
+            $('authErr').innerText = "";
+        };
+
+        window.handleAuth = async function () {
+            const name = $('authName').value.trim();
+            const email = $('authEmail').value.trim();
+            const pass = $('authPass').value;
+            $('authErr').innerText = "";
+            if (!email || !pass) { $('authErr').innerText = "Weka email na password."; return; }
+            try {
+                if (isRegisterMode) {
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    if (name) await updateProfile(cred.user, { displayName: name });
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+                $('authPass').value = "";
+            } catch (e) {
+                $('authErr').innerText = friendlyError(e);
+            }
+        };
+
+        window.logoutUser = async function () {
+            await signOut(auth);
+        };
+
+        // ---------- CEO login (double-click logo) ----------
+        window.secretCEOLogin = function () {
+            if (isCEO) { switchPage('page3'); return; }
+            $('ceoErr').innerText = "";
+            $('ceoModal').classList.add('open');
+            $('ceoEmail').focus();
+        };
+        window.closeCeoModal = function () {
+            $('ceoModal').classList.remove('open');
+            $('ceoPass').value = "";
+        };
+        window.ceoSignIn = async function () {
+            $('ceoErr').innerText = "";
+            try {
+                await signInWithEmailAndPassword(auth, $('ceoEmail').value.trim(), $('ceoPass').value);
+                if (auth.currentUser.email !== CEO_EMAIL) {
+                    await signOut(auth);
+                    $('ceoErr').innerText = "Akaunti hii si ya CEO.";
+                    return;
+                }
+                closeCeoModal();
+                switchPage('page3');
+            } catch (e) {
+                $('ceoErr').innerText = friendlyError(e);
+            }
+        };
+
+        // ---------- auth state ----------
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            isCEO = !!user && user.email === CEO_EMAIL;
+            updateAuthUI();
+            stopListeners();
+            if (user) {
+                startPosts();
+                if (isCEO) startThreadList(); else startMyChat();
+            } else {
+                $('statusFeedContainer').innerHTML = "";
+                $('chatMessages').innerHTML = "";
+                switchPage('page1');
+            }
+        });
+
+        function updateAuthUI() {
+            if (currentUser) {
+                $('authForms').style.display = 'none';
+                $('userInfoBox').style.display = 'block';
+                const label = isCEO ? "Aziz Hamidu Luambano (CEO)" : (currentUser.displayName ? `${currentUser.displayName} (${currentUser.email})` : currentUser.email);
+                $('loggedUserEmail').innerText = "Signed in as: " + label;
+            } else {
+                $('authForms').style.display = 'block';
+                $('userInfoBox').style.display = 'none';
+            }
+            $('adminPostBox').style.display = isCEO ? 'block' : 'none';
+            $('chatThreads').style.display = isCEO ? 'block' : 'none';
+            $('chatHeader').innerText = isCEO ? "CEO Inbox: Reply to clients" : "Chat with NBL3KTECH";
+        }
+
+        function stopListeners() {
+            if (unsubPosts) { unsubPosts(); unsubPosts = null; }
+            if (unsubThreads) { unsubThreads(); unsubThreads = null; }
+            if (unsubMessages) { unsubMessages(); unsubMessages = null; }
+            activeThreadUid = null;
+        }
+
+        // ---------- status posts ----------
+        function startPosts() {
+            const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+            unsubPosts = onSnapshot(q, (snap) => {
+                const box = $('statusFeedContainer');
+                box.innerHTML = "";
+                snap.forEach((d) => {
+                    const p = d.data();
+                    const card = document.createElement('div');
+                    card.className = 'status-card';
+
+                    const head = document.createElement('div');
+                    head.className = 'status-header';
+                    const who = document.createElement('span');
+                    who.innerHTML = "<strong>Aziz Hamidu Luambano (CEO)</strong>";
+                    const when = document.createElement('span');
+                    when.textContent = fmtTime(p.createdAt);
+                    head.append(who, when);
+
+                    const h = document.createElement('h4');
+                    h.style.cssText = "margin-bottom:0.5rem;color:#fff;";
+                    h.textContent = p.title;
+                    const body = document.createElement('p');
+                    body.textContent = p.content;
+                    card.append(head, h, body);
+
+                    if (isCEO) {
+                        const del = document.createElement('button');
+                        del.className = 'btn btn-danger';
+                        del.style.cssText = "padding:0.3rem 0.8rem;margin-top:0.6rem;font-size:0.8rem;";
+                        del.textContent = "Delete";
+                        del.onclick = () => { if (confirm("Delete this update?")) deleteDoc(doc(db, "posts", d.id)); };
+                        card.appendChild(del);
+                    }
+                    box.appendChild(card);
+                });
+                if (snap.empty) {
+                    box.innerHTML = '<div class="status-card"><p>Stay tuned here for live updates on our latest electronics prototypes, robotics builds, and mechatronics engineering breakthroughs.</p></div>';
+                }
+            }, (err) => console.error("posts:", err));
+        }
+
+        window.publishStatus = async function () {
+            if (!isCEO) return;
+            const title = $('postTitle').value.trim();
+            const content = $('postContent').value.trim();
+            if (!title || !content) { alert("Please enter both a headline and message."); return; }
+            try {
+                await addDoc(collection(db, "posts"), { title, content, createdAt: serverTimestamp() });
+                $('postTitle').value = '';
+                $('postContent').value = '';
+            } catch (e) {
+                alert("Imeshindikana kupost: " + e.code);
+            }
+        };
+
+        // ---------- chat: private thread per visitor ----------
+        function renderMessages(snap, viewerIsCEO, visitorName) {
+            const box = $('chatMessages');
+            box.innerHTML = "";
+            if (!viewerIsCEO) {
+                const welcome = document.createElement('div');
+                welcome.className = 'msg ceo-msg';
+                welcome.innerHTML = "<small>Aziz (CEO - NBL3KTECH)</small>";
+                welcome.append("Hello! Welcome to our live chat. Write your question below and the CEO will reply here.");
+                box.appendChild(welcome);
+            }
+            snap.forEach((d) => {
+                const m = d.data();
+                const div = document.createElement('div');
+                const fromCEO = m.from === 'ceo';
+                div.className = fromCEO ? 'msg ceo-msg' : 'msg';
+                const s = document.createElement('small');
+                s.textContent = fromCEO ? "Aziz (CEO - NBL3KTECH)" : (viewerIsCEO ? (visitorName || m.name || "Visitor") : "You");
+                div.appendChild(s);
+                div.append(m.text);
+                box.appendChild(div);
+            });
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // Visitor: sees only own conversation
+        function startMyChat() {
+            const q = query(collection(db, "threads", currentUser.uid, "messages"), orderBy("createdAt", "asc"));
+            unsubMessages = onSnapshot(q, (snap) => renderMessages(snap, false), (err) => console.error("chat:", err));
+        }
+
+        // CEO: list of all conversations
+        function startThreadList() {
+            const q = query(collection(db, "threads"), orderBy("updatedAt", "desc"));
+            unsubThreads = onSnapshot(q, (snap) => {
+                const sel = $('threadSelect');
+                const prev = activeThreadUid;
+                sel.innerHTML = "";
+                if (snap.empty) {
+                    const o = document.createElement('option');
+                    o.textContent = "No conversations yet";
+                    o.value = "";
+                    sel.appendChild(o);
+                    $('chatMessages').innerHTML = "";
+                    return;
+                }
+                snap.forEach((d) => {
+                    const t = d.data();
+                    const o = document.createElement('option');
+                    o.value = d.id;
+                    o.textContent = `${t.name || "Visitor"} (${t.email || ""}): ${(t.lastMessage || "").slice(0, 30)}`;
+                    sel.appendChild(o);
+                });
+                const stillThere = prev && [...sel.options].some(o => o.value === prev);
+                const target = stillThere ? prev : sel.options[0].value;
+                sel.value = target;
+                if (target !== prev) selectThread(target);
+            }, (err) => console.error("threads:", err));
+        }
+
+        window.selectThread = function (uid) {
+            if (unsubMessages) { unsubMessages(); unsubMessages = null; }
+            activeThreadUid = uid || null;
+            if (!uid) return;
+            const label = $('threadSelect').selectedOptions[0] ? $('threadSelect').selectedOptions[0].textContent.split(" (")[0] : "Visitor";
+            const q = query(collection(db, "threads", uid, "messages"), orderBy("createdAt", "asc"));
+            unsubMessages = onSnapshot(q, (snap) => renderMessages(snap, true, label), (err) => console.error("chat:", err));
+        };
+
+        window.sendChatMessage = async function () {
+            const text = $('chatInput').value.trim();
+            if (!text || !currentUser) return;
+            if (text.length > 1000) { alert("Message ni ndefu sana."); return; }
+            try {
+                if (isCEO) {
+                    if (!activeThreadUid) return;
+                    await addDoc(collection(db, "threads", activeThreadUid, "messages"), {
+                        text, from: "ceo", createdAt: serverTimestamp()
+                    });
+                    await setDoc(doc(db, "threads", activeThreadUid), {
+                        lastMessage: "CEO: " + text, updatedAt: serverTimestamp()
+                    }, { merge: true });
+                } else {
+                    const name = currentUser.displayName || currentUser.email;
+                    await setDoc(doc(db, "threads", currentUser.uid), {
+                        name, email: currentUser.email, lastMessage: text, updatedAt: serverTimestamp()
+                    }, { merge: true });
+                    await addDoc(collection(db, "threads", currentUser.uid, "messages"), {
+                        text, from: "visitor", name, createdAt: serverTimestamp()
+                    });
+                }
+                $('chatInput').value = '';
+            } catch (e) {
+                alert("Imeshindikana kutuma: " + e.code);
+            }
+        };
+    </script>
+</body>
+</html>
