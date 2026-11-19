@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBL3KTECH | Electronics, Robotics & Engineering</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg-dark: #0a0f1c;
@@ -51,7 +52,7 @@
         .card h3 { color: var(--primary); margin-bottom: 1rem; }
         .auth-container { max-width: 450px; margin: 1rem auto 3rem; background: var(--bg-card); padding: 2.5rem; border-radius: 12px; border: 1px solid rgba(0, 229, 255, 0.25); }
         .form-group { margin-bottom: 1.2rem; }
-        .form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); }
+        .form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-muted); font-size: 0.9rem; }
         input, textarea, select { width: 100%; padding: 0.75rem; background: var(--bg-dark); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 5px; color: var(--text-light); outline: none; }
         input:focus, textarea:focus, select:focus { border-color: var(--primary); }
         .auth-err { color: #f87171; font-size: 0.9rem; margin-bottom: 0.8rem; min-height: 1.2rem; text-align: center; }
@@ -67,7 +68,10 @@
         .admin-post-box { display: none; background: #162238; padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid var(--primary); }
         .status-card { background: var(--bg-card); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.08); }
         .status-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--primary); margin-bottom: 0.5rem; gap: 0.5rem; }
-        .status-card p { color: var(--text-muted); font-size: 0.95rem; white-space: pre-wrap; }
+        .status-card p { color: var(--text-muted); font-size: 0.95rem; white-space: pre-wrap; margin-bottom: 0.8rem; }
+        .post-media-img { max-width: 100%; border-radius: 8px; margin-top: 0.6rem; border: 1px solid rgba(0, 229, 255, 0.25); display: block; }
+        .post-file-link { display: inline-block; margin-top: 0.6rem; padding: 0.5rem 1rem; background: rgba(0, 229, 255, 0.12); border: 1px solid var(--primary); color: var(--primary); border-radius: 5px; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+        .post-file-link:hover { background: var(--primary); color: #000; }
         .chat-box { background: var(--bg-card); border-radius: 10px; display: flex; flex-direction: column; height: 500px; border: 1px solid rgba(0, 229, 255, 0.2); }
         .chat-header { padding: 1rem; background: #162238; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; color: var(--primary); border-radius: 10px 10px 0 0; }
         .chat-messages { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; }
@@ -159,12 +163,54 @@
             <div class="detail-block">
                 <h3>1. Who We Are & Leadership</h3>
                 <p><strong>NBL3KTECH</strong> is an innovation-driven electronics, robotics, and mechatronics engineering enterprise founded in Tanzania by CEO <strong>Aziz Hamidu Luambano</strong>. We bridge theoretical engineering principles with practical hardware implementation—designing durable electronic circuits, autonomous robots, and industrial control systems built to solve modern technical challenges.</p>
+                <p>Our core mission is to accelerate technological self-reliance across East Africa through precision hardware prototyping, embedded firmware engineering, and intelligent automation.</p>
             </div>
 
             <div class="detail-block">
                 <h3>2. Comprehensive Engineering & Technical Services</h3>
                 <p><strong>Custom PCB Design & Embedded Systems:</strong> Complete schematic architecture, multi-layer Printed Circuit Board (PCB) layout, soldering, and firmware programming for Arduino, ESP32, STM32, and PIC microcontrollers.</p>
                 <p><strong>Robotics & Autonomous Systems:</strong> Design and fabrication of obstacle-avoiding mobile robots, robotic manipulators, automated sorting conveyors, and sensor-guided field inspection units.</p>
+                <p><strong>Industrial & Home Automation (IoT):</strong> Programmable Logic Controller (PLC) integration, pneumatic gate and actuator control loops, smart energy management, and wireless IoT telemetry.</p>
+                <p><strong>CAD Modeling & Engineering Consultation:</strong> 2D/3D mechanical component drafting using AutoCAD and technical advisory for academic, commercial, and industrial hardware projects.</p>
+            </div>
+
+            <div class="detail-block">
+                <h3>3. How Our Project Development Workflow Operates</h3>
+                <p><strong>Phase 1 — Requirement Analysis:</strong> Clients submit project specifications via our direct email inquiry form, WhatsApp, or live chat portal.</p>
+                <p><strong>Phase 2 — Circuit Simulation & CAD Drafting:</strong> Our engineering team models the mechanical enclosure and simulates electronic circuits to verify voltage, current, and logic integrity.</p>
+                <p><strong>Phase 3 — Prototyping, Firmware & Testing:</strong> Hardware components are assembled onto custom PCBs, programmed, and subjected to rigorous stress testing before final deployment.</p>
+            </div>
+
+            <h2 class="section-title" style="margin-top: 4rem;">The Evolution & <span>History of Technology</span></h2>
+            <div class="detail-block">
+                <p>Understanding modern robotics and mechatronics requires appreciating the milestones that transformed human civilization from manual labor to intelligent machines:</p>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span>1760 – 1840 | The First Industrial Revolution</span>
+                        <h4>Mechanization & Steam Power</h4>
+                        <p>The transition from hand production methods to machines powered by water and steam laid the mechanical foundation of modern engineering, introducing gears, linkages, and precision machining.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>1870 – 1914 | The Second Industrial Revolution</span>
+                        <h4>Electricity, Electromagnetism & Mass Production</h4>
+                        <p>Breakthroughs by pioneers like Nikola Tesla, Michael Faraday, and Thomas Edison harnessed electrical power, enabling electric motors, telecommunications, and assembly-line manufacturing.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>1947 – 1971 | The Semiconductor & Digital Revolution</span>
+                        <h4>Invention of the Transistor & Microprocessor</h4>
+                        <p>The invention of the transistor at Bell Labs (1947) replaced bulky vacuum tubes, leading to Integrated Circuits (ICs) and the first commercial microprocessor (Intel 4004 in 1971)—the brain behind every modern electronic device.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>1969 – 2000s | Rise of Mechatronics & Programmable Automation</span>
+                        <h4>PLCs, Industrial Robots & Embedded Microcontrollers</h4>
+                        <p>The integration of mechanical engineering, electronics, and computer control gave birth to Mechatronics. Programmable Logic Controllers (PLCs) and early robotic arms revolutionized factory automation.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span>2010s – Present (2026) | Industry 4.0, IoT & Intelligent Robotics</span>
+                        <h4>Connected Smart Systems & AI-Driven Hardware</h4>
+                        <p>Today, low-cost, high-speed microcontrollers (like ESP32 and ARM Cortex), wireless Internet of Things (IoT) networks, and Artificial Intelligence allow startups like <strong>NBL3KTECH</strong> to engineer smart, autonomous solutions accessible to everyone.</p>
+                    </div>
+                </div>
             </div>
 
             <div style="text-align: center; margin-top: 2.5rem;">
@@ -178,11 +224,16 @@
         <div class="container">
             <h2 class="section-title">NBL3KTECH <span>Updates & Live Chat</span></h2>
 
+            <!-- CEO Publisher na sehemu ya kupakia Picha au File -->
             <div id="adminPostBox" class="admin-post-box">
-                <h3 style="color: var(--primary); margin-bottom: 1rem;">CEO Status Publisher</h3>
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">CEO Status & Media Publisher</h3>
                 <div class="form-group"><input type="text" id="postTitle" placeholder="Update Headline..."></div>
                 <div class="form-group"><textarea id="postContent" rows="3" placeholder="Write your status update, project progress, or announcement..."></textarea></div>
-                <button class="btn" onclick="publishStatus()">Publish Update</button>
+                <div class="form-group">
+                    <label>Attach Photo or Document (PDF, ZIP, CAD, Image - Optional)</label>
+                    <input type="file" id="postFile" accept="image/*,.pdf,.doc,.docx,.zip,.rar,.txt">
+                </div>
+                <button class="btn" id="publishBtn" onclick="publishStatus()">Publish Update</button>
                 <button class="btn btn-danger" style="margin-left: 0.5rem;" onclick="logoutUser()">Log Out</button>
             </div>
 
@@ -202,6 +253,20 @@
                             <button class="btn" style="padding: 0.5rem 1rem;" onclick="sendChatMessage()">Send</button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Formspree Direct Email Inquiry -->
+            <div style="margin-top: 4rem; max-width: 600px; margin-left: auto; margin-right: auto;" class="card">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">Send Direct Email Inquiry</h3>
+                <form action="https://formspree.io/f/xwloodjd" method="POST">
+                    <div class="form-group"><label>Full Name</label><input type="text" name="name" placeholder="Your name..." required></div>
+                    <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="Your email..." required></div>
+                    <div class="form-group"><label>Project Details / Message</label><textarea name="message" rows="4" placeholder="Describe your inquiry or project..." required></textarea></div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Message via Email</button>
+                </form>
+                <div style="margin-top: 1.2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                    <p>WhatsApp / Call: <strong>+255 757 351 134</strong> | Email: <strong>nbl3ktech@gmail.com</strong></p>
                 </div>
             </div>
         </div>
@@ -229,9 +294,13 @@
     <script>
         const $ = (id) => document.getElementById(id);
 
-        // Password ya siri moja kwa moja bila kuharibika
-        const SECRET_KEY = "NBL3K2026";
+        // ====== SUPABASE CONFIGURATION (IMESHASAZIWA) ======
+        const SUPABASE_URL = "https://jmbsyspczhognpjnrpzy.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_oFwB-E9y7biI1sN2WupGZQ_WSpgHv4S";
+        const isCloudActive = SUPABASE_URL.startsWith("http") && !SUPABASE_KEY.startsWith("WEKA_");
+        const sb = isCloudActive ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
+        const SECRET_KEY = "NBL3K2026";
         let isRegisterMode = false;
         let currentUser = JSON.parse(localStorage.getItem('nbl3k_user')) || null;
         let isCEO = sessionStorage.getItem('nbl3k_admin_session') === '1';
@@ -296,6 +365,14 @@
             updateAuthUI();
             loadStatuses();
             loadChatMessages();
+            if (isCloudActive) {
+                setInterval(() => {
+                    if ($('page3').classList.contains('active')) {
+                        loadStatuses();
+                        loadChatMessages();
+                    }
+                }, 5000);
+            }
         };
 
         function switchPage(pageId) {
@@ -365,16 +442,44 @@
             $('chatHeader').innerText = isCEO ? "CEO Inbox: Live Discussions" : "Chat with NBL3KTECH";
         }
 
-        function loadStatuses() {
+        // ================= STATUS & MEDIA UPLOAD =================
+        async function loadStatuses() {
             const box = $('statusFeedContainer');
-            let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [
-                { id: 1, title: "Welcome to NBL3KTECH Portal", content: "Our engineering and robotics platform is live. Explore our latest prototypes, industrial automation projects, and technical updates.", time: "2026" }
-            ];
+            let posts = [];
+
+            if (isCloudActive) {
+                const { data } = await sb.from('posts').select('*').order('created_at', { ascending: false });
+                if (data) {
+                    posts = data.map(p => ({
+                        id: p.id,
+                        title: p.title,
+                        content: p.content,
+                        fileUrl: p.file_url,
+                        fileName: p.file_name,
+                        time: new Date(p.created_at).toLocaleString()
+                    }));
+                }
+            } else {
+                posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [
+                    { id: 1, title: "Welcome to NBL3KTECH Portal", content: "Our engineering and robotics platform is live. Explore our latest prototypes and technical updates.", time: "2026" }
+                ];
+            }
             
             box.innerHTML = "";
             posts.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'status-card';
+
+                let mediaHtml = "";
+                if (p.fileUrl) {
+                    const isImg = /\.(jpg|jpeg|png|gif|webp)$/i.test(p.fileName || "") || p.fileUrl.startsWith("data:image");
+                    if (isImg) {
+                        mediaHtml = `<img src="${p.fileUrl}" alt="Attachment" class="post-media-img">`;
+                    } else {
+                        mediaHtml = `<a href="${p.fileUrl}" download="${p.fileName || 'file'}" target="_blank" class="post-file-link">&#128206; Download File: ${p.fileName || 'Attachment'}</a>`;
+                    }
+                }
+
                 card.innerHTML = `
                     <div class="status-header">
                         <span><strong>Aziz Hamidu Luambano (CEO)</strong></span>
@@ -382,11 +487,12 @@
                     </div>
                     <h4 style="margin-bottom:0.5rem;color:#fff;">${p.title}</h4>
                     <p>${p.content}</p>
+                    ${mediaHtml}
                 `;
                 if (isCEO) {
                     const del = document.createElement('button');
                     del.className = 'btn btn-danger';
-                    del.style.cssText = "padding:0.3rem 0.8rem;margin-top:0.6rem;font-size:0.8rem;";
+                    del.style.cssText = "padding:0.3rem 0.8rem;margin-top:0.8rem;font-size:0.8rem;display:block;";
                     del.textContent = "Delete";
                     del.onclick = () => { deleteStatus(p.id); };
                     card.appendChild(del);
@@ -395,39 +501,87 @@
             });
         }
 
-        window.publishStatus = function () {
+        window.publishStatus = async function () {
             if (!isCEO) return;
             const title = $('postTitle').value.trim();
             const content = $('postContent').value.trim();
-            if (!title || !content) return;
+            const fileInput = $('postFile');
+            const file = fileInput.files[0];
 
-            let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [];
-            posts.unshift({
-                id: Date.now(),
-                title,
-                content,
-                time: new Date().toLocaleString()
-            });
-            localStorage.setItem('nbl3k_posts', JSON.stringify(posts));
+            if (!title || !content) { alert("Weka kichwa cha habari na ujumbe."); return; }
+
+            const btn = $('publishBtn');
+            btn.disabled = true;
+            btn.innerText = "Publishing...";
+
+            let fileUrl = null;
+            let fileName = file ? file.name : null;
+
+            if (file) {
+                if (isCloudActive) {
+                    const cleanName = Date.now() + "_" + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                    const { error: upErr } = await sb.storage.from('uploads').upload(cleanName, file);
+                    if (!upErr) {
+                        const { data: urlData } = sb.storage.from('uploads').getPublicUrl(cleanName);
+                        fileUrl = urlData.publicUrl;
+                    }
+                } else {
+                    fileUrl = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }
+
+            if (isCloudActive) {
+                await sb.from('posts').insert([{ title, content, file_url: fileUrl, file_name: fileName }]);
+            } else {
+                let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [];
+                posts.unshift({ id: Date.now(), title, content, fileUrl, fileName, time: new Date().toLocaleString() });
+                localStorage.setItem('nbl3k_posts', JSON.stringify(posts));
+            }
 
             $('postTitle').value = "";
             $('postContent').value = "";
+            fileInput.value = "";
+            btn.disabled = false;
+            btn.innerText = "Publish Update";
             loadStatuses();
         };
 
-        function deleteStatus(id) {
+        async function deleteStatus(id) {
             if (!isCEO || !confirm("Delete this update?")) return;
-            let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [];
-            posts = posts.filter(p => p.id !== id);
-            localStorage.setItem('nbl3k_posts', JSON.stringify(posts));
+            if (isCloudActive) {
+                await sb.from('posts').delete().eq('id', id);
+            } else {
+                let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [];
+                posts = posts.filter(p => p.id !== id);
+                localStorage.setItem('nbl3k_posts', JSON.stringify(posts));
+            }
             loadStatuses();
         }
 
-        function loadChatMessages() {
+        // ================= LIVE CHAT =================
+        async function loadChatMessages() {
             const box = $('chatMessages');
-            let messages = JSON.parse(localStorage.getItem('nbl3k_chats')) || [
-                { sender: "NBL3KTECH", text: "Welcome! Send a message to start a discussion.", time: "Online", isCEO: true }
-            ];
+            let messages = [];
+
+            if (isCloudActive) {
+                const { data } = await sb.from('messages').select('*').order('created_at', { ascending: true });
+                if (data) {
+                    messages = data.map(m => ({
+                        sender: m.sender,
+                        text: m.text,
+                        time: new Date(m.created_at).toLocaleTimeString(),
+                        isCEO: m.is_ceo
+                    }));
+                }
+            } else {
+                messages = JSON.parse(localStorage.getItem('nbl3k_chats')) || [
+                    { sender: "NBL3KTECH", text: "Welcome! Send a message to start a discussion.", time: "Online", isCEO: true }
+                ];
+            }
 
             box.innerHTML = "";
             messages.forEach(m => {
@@ -439,23 +593,21 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        window.sendChatMessage = function () {
+        window.sendChatMessage = async function () {
             const input = $('chatInput');
             const text = input.value.trim();
             if (!text) return;
 
-            let messages = JSON.parse(localStorage.getItem('nbl3k_chats')) || [];
             const senderName = isCEO ? "Aziz Hamidu Luambano (CEO)" : (currentUser ? currentUser.name : "Visitor");
-
-            messages.push({
-                sender: senderName,
-                text: text,
-                time: new Date().toLocaleTimeString(),
-                isCEO: isCEO
-            });
-
-            localStorage.setItem('nbl3k_chats', JSON.stringify(messages));
             input.value = "";
+
+            if (isCloudActive) {
+                await sb.from('messages').insert([{ sender: senderName, text, is_ceo: isCEO }]);
+            } else {
+                let messages = JSON.parse(localStorage.getItem('nbl3k_chats')) || [];
+                messages.push({ sender: senderName, text, time: new Date().toLocaleTimeString(), isCEO });
+                localStorage.setItem('nbl3k_chats', JSON.stringify(messages));
+            }
             loadChatMessages();
         };
     </script>
