@@ -250,7 +250,7 @@
                         <div id="chatMessages" class="chat-messages"></div>
                         <div class="chat-input-area">
                             <input type="text" id="chatInput" placeholder="Write a message..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-                            <button class="btn" style="padding: 0.5rem 1rem;" onclick="sendChatMessage()">Send</button>
+                            <button class="btn" style="padding: 0.5rem 1rem;" id="sendChatBtn" onclick="sendChatMessage()">Send</button>
                         </div>
                     </div>
                 </div>
@@ -294,10 +294,10 @@
     <script>
         const $ = (id) => document.getElementById(id);
 
-        // ====== SUPABASE CONFIGURATION (IMESHASAZIWA) ======
+        // ====== SUPABASE CONFIGURATION ======
         const SUPABASE_URL = "https://jmbsyspczhognpjnrpzy.supabase.co";
         const SUPABASE_KEY = "sb_publishable_oFwB-E9y7biI1sN2WupGZQ_WSpgHv4S";
-        const isCloudActive = SUPABASE_URL.startsWith("http") && !SUPABASE_KEY.startsWith("WEKA_");
+        const isCloudActive = Boolean(window.supabase && SUPABASE_URL.startsWith("http") && SUPABASE_KEY.length > 10);
         const sb = isCloudActive ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
         const SECRET_KEY = "NBL3K2026";
@@ -305,7 +305,6 @@
         let currentUser = JSON.parse(localStorage.getItem('nbl3k_user')) || null;
         let isCEO = sessionStorage.getItem('nbl3k_admin_session') === '1';
 
-        // Triple-click trigger on brand logo
         let clickCount = 0;
         let clickTimer = null;
         $('brandTrigger').addEventListener('click', () => {
@@ -322,7 +321,6 @@
             }
         });
 
-        // Secret keyboard shortcut: Ctrl + Shift + L
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'l') {
                 e.preventDefault();
@@ -354,6 +352,7 @@
                 closeSysModal();
                 updateAuthUI();
                 loadStatuses();
+                loadChatMessages();
                 switchPage('page3');
             } else {
                 $('sysErr').innerText = "Access Denied.";
@@ -391,6 +390,10 @@
                 return;
             }
             switchPage(pageId);
+            if (pageId === 'page3') {
+                loadStatuses();
+                loadChatMessages();
+            }
         };
 
         window.toggleAuthMode = function () {
@@ -415,6 +418,7 @@
             
             updateAuthUI();
             loadStatuses();
+            loadChatMessages();
             $('authPass').value = "";
         };
 
@@ -448,7 +452,11 @@
             let posts = [];
 
             if (isCloudActive) {
-                const { data } = await sb.from('posts').select('*').order('created_at', { ascending: false });
+                const { data, error } = await sb.from('posts').select('*').order('created_at', { ascending: false });
+                if (error) {
+                    box.innerHTML = `<div class="status-card"><p style="color:#f87171;">Cloud error (posts): ${error.message}</p></div>`;
+                    return;
+                }
                 if (data) {
                     posts = data.map(p => ({
                         id: p.id,
@@ -466,6 +474,11 @@
             }
             
             box.innerHTML = "";
+            if (posts.length === 0) {
+                box.innerHTML = `<div class="status-card"><p>No updates published yet.</p></div>`;
+                return;
+            }
+
             posts.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'status-card';
@@ -502,7 +515,7 @@
         }
 
         window.publishStatus = async function () {
-            if (!isCEO) return;
+            if (!isCEO) { alert("Ingia kwanza kama CEO."); return; }
             const title = $('postTitle').value.trim();
             const content = $('postContent').value.trim();
             const fileInput = $('postFile');
@@ -517,43 +530,53 @@
             let fileUrl = null;
             let fileName = file ? file.name : null;
 
-            if (file) {
-                if (isCloudActive) {
-                    const cleanName = Date.now() + "_" + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-                    const { error: upErr } = await sb.storage.from('uploads').upload(cleanName, file);
-                    if (!upErr) {
+            try {
+                if (file) {
+                    if (isCloudActive) {
+                        const cleanName = Date.now() + "_" + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                        const { error: upErr } = await sb.storage.from('uploads').upload(cleanName, file);
+                        if (upErr) {
+                            throw new Error("Storage upload failed: " + upErr.message);
+                        }
                         const { data: urlData } = sb.storage.from('uploads').getPublicUrl(cleanName);
                         fileUrl = urlData.publicUrl;
+                    } else {
+                        fileUrl = await new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onload = () => resolve(reader.result);
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                }
+
+                if (isCloudActive) {
+                    const { error: insErr } = await sb.from('posts').insert([{ title, content, file_url: fileUrl, file_name: fileName }]);
+                    if (insErr) {
+                        throw new Error("Database insert failed: " + insErr.message);
                     }
                 } else {
-                    fileUrl = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result);
-                        reader.readAsDataURL(file);
-                    });
+                    let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [];
+                    posts.unshift({ id: Date.now(), title, content, fileUrl, fileName, time: new Date().toLocaleString() });
+                    localStorage.setItem('nbl3k_posts', JSON.stringify(posts));
                 }
-            }
 
-            if (isCloudActive) {
-                await sb.from('posts').insert([{ title, content, file_url: fileUrl, file_name: fileName }]);
-            } else {
-                let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [];
-                posts.unshift({ id: Date.now(), title, content, fileUrl, fileName, time: new Date().toLocaleString() });
-                localStorage.setItem('nbl3k_posts', JSON.stringify(posts));
+                $('postTitle').value = "";
+                $('postContent').value = "";
+                fileInput.value = "";
+                await loadStatuses();
+            } catch (err) {
+                alert("Imeshindikana kuweka update: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Publish Update";
             }
-
-            $('postTitle').value = "";
-            $('postContent').value = "";
-            fileInput.value = "";
-            btn.disabled = false;
-            btn.innerText = "Publish Update";
-            loadStatuses();
         };
 
         async function deleteStatus(id) {
             if (!isCEO || !confirm("Delete this update?")) return;
             if (isCloudActive) {
-                await sb.from('posts').delete().eq('id', id);
+                const { error } = await sb.from('posts').delete().eq('id', id);
+                if (error) { alert("Imeshindikana kufuta: " + error.message); return; }
             } else {
                 let posts = JSON.parse(localStorage.getItem('nbl3k_posts')) || [];
                 posts = posts.filter(p => p.id !== id);
@@ -568,7 +591,11 @@
             let messages = [];
 
             if (isCloudActive) {
-                const { data } = await sb.from('messages').select('*').order('created_at', { ascending: true });
+                const { data, error } = await sb.from('messages').select('*').order('created_at', { ascending: true });
+                if (error) {
+                    box.innerHTML = `<div class="msg"><small style="color:#f87171;">Chat error</small><p style="color:#f87171;">${error.message}</p></div>`;
+                    return;
+                }
                 if (data) {
                     messages = data.map(m => ({
                         sender: m.sender,
@@ -584,6 +611,11 @@
             }
 
             box.innerHTML = "";
+            if (messages.length === 0) {
+                box.innerHTML = `<div class="msg"><small>NBL3KTECH</small><p>Welcome! Send a message to start a discussion.</p></div>`;
+                return;
+            }
+
             messages.forEach(m => {
                 const div = document.createElement('div');
                 div.className = 'msg' + (m.isCEO ? ' ceo-msg' : '');
@@ -598,17 +630,29 @@
             const text = input.value.trim();
             if (!text) return;
 
+            const btn = $('sendChatBtn');
+            btn.disabled = true;
             const senderName = isCEO ? "Aziz Hamidu Luambano (CEO)" : (currentUser ? currentUser.name : "Visitor");
-            input.value = "";
 
-            if (isCloudActive) {
-                await sb.from('messages').insert([{ sender: senderName, text, is_ceo: isCEO }]);
-            } else {
-                let messages = JSON.parse(localStorage.getItem('nbl3k_chats')) || [];
-                messages.push({ sender: senderName, text, time: new Date().toLocaleTimeString(), isCEO });
-                localStorage.setItem('nbl3k_chats', JSON.stringify(messages));
+            try {
+                if (isCloudActive) {
+                    const { error } = await sb.from('messages').insert([{ sender: senderName, text, is_ceo: isCEO }]);
+                    if (error) {
+                        throw new Error(error.message);
+                    }
+                } else {
+                    let messages = JSON.parse(localStorage.getItem('nbl3k_chats')) || [];
+                    messages.push({ sender: senderName, text, time: new Date().toLocaleTimeString(), isCEO });
+                    localStorage.setItem('nbl3k_chats', JSON.stringify(messages));
+                }
+                input.value = "";
+                await loadChatMessages();
+            } catch (err) {
+                alert("Ujumbe umeshindwa kutumwa: " + err.message);
+            } finally {
+                btn.disabled = false;
+                input.focus();
             }
-            loadChatMessages();
         };
     </script>
 </body>
